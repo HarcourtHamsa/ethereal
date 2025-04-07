@@ -1,5 +1,4 @@
-import { NextFunction, Request, Response } from "express";
-import { HotelAmenity } from "../../types/hotel";
+import { NextFunction, Response } from "express";
 import { db } from "../../config/database";
 import { AddressModel } from "../../models/address";
 import { HotelModel } from "../../models/hotel";
@@ -8,6 +7,7 @@ import { HttpException } from "../../utils/http";
 import { HttpStatus } from "../../types/http";
 import { processFileUploads } from "../../utils/core";
 import { IAddress } from "../../types/address";
+import mongoose from "mongoose";
 
 const createHotelHandler = async (
   req: any,
@@ -35,17 +35,12 @@ const createHotelHandler = async (
     }
 
     if (amenities && amenities.length > 0) {
-      const validAmenities = Object.values(HotelAmenity);
-      const invalidAmenities = JSON.parse(amenities).filter(
-        (amenity: string) => !validAmenities.includes(amenity as HotelAmenity)
-      );
+      for (const amenity of amenities) {
+        const isValidId = mongoose.Types.ObjectId.isValid(amenity);
 
-      if (invalidAmenities.length > 0) {
-        res.status(400).json({
-          success: false,
-          message: `Invalid amenities provided: ${invalidAmenities.join(", ")}`,
-          validAmenities,
-        });
+        if (!isValidId) {
+          throw new HttpException(HttpStatus.BadRequest, "Invalid amenity");
+        }
       }
     }
 

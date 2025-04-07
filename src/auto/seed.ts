@@ -1,4 +1,5 @@
-import { DEFAULT_ROLES } from "../constants";
+import { DEFAULT_AMENITIES, DEFAULT_ROLES } from "../constants";
+import { AmenityModel } from "../models/amenity";
 import { RoleModel } from "../models/role";
 
 const seedRole = async () => {
@@ -12,6 +13,19 @@ const seedRole = async () => {
   console.log("Roles seeded successfully");
 };
 
+const seedAmenities = async () => {
+  const amenities = await AmenityModel.countDocuments({});
+
+  if (amenities > 0) {
+    return;
+  }
+
+  await AmenityModel.insertMany(DEFAULT_AMENITIES);
+
+  console.log("Amenities seeded successfully");
+};
+
 export const runSeed = async () => {
   await seedRole();
+  await seedAmenities();
 };

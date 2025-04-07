@@ -7,7 +7,7 @@ async function getRoomsHandler(
   res: Response,
   next: NextFunction
 ) {
-  const { page = 1, limit = 10, status, hotel } = req.query;
+  const { page = 1, limit = 10, status, hotel, minPrice, maxPrice } = req.query;
   try {
     const filter: any = {};
 
@@ -21,8 +21,18 @@ async function getRoomsHandler(
       filter.hotel = new mongoose.Types.ObjectId(hotel.toString());
     }
 
+    if (minPrice && maxPrice) {
+      filter.price = {
+        $gte: Number(minPrice),
+        $lte: Number(maxPrice),
+      };
+    }
+
     const [rooms, total] = await Promise.all([
-      RoomModel.find(filter).skip(skip).limit(Number(limit)),
+      RoomModel.find(filter)
+        .skip(skip)
+        .limit(Number(limit))
+        .populate("amenities"),
       RoomModel.countDocuments(filter),
     ]);
 

@@ -4,6 +4,8 @@ import userRoutes from "./user";
 import reviewRoutes from "./review";
 import hotelRoutes from "./hotel";
 import roomRoutes from "./room";
+import amenityRoutes from "./amenity";
+import bookingRoutes from "./booking";
 
 const router = express.Router();
 
@@ -15,5 +17,7 @@ router.use("/user", userRoutes);
 router.use(reviewRoutes);
 router.use(hotelRoutes);
 router.use(roomRoutes);
+router.use(amenityRoutes);
+router.use(bookingRoutes);
 
 export default router;

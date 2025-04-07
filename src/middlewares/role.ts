@@ -8,7 +8,7 @@ function roleMiddleware(
   return (req: Request, res: Response, next: NextFunction) => {
     const { user } = req as CustomRequest;
 
-    if (requiredRoles.includes(user.role as AccountRole)) {
+    if (!requiredRoles.includes(user.role as AccountRole)) {
       return res.status(HttpStatus.Forbidden).json({ error: "Forbidden" });
     }
 

@@ -56,7 +56,13 @@ export const getHotelsPipeline = ({
     // );
   }
 
-  if (name) pipeline.push({ $match: { name } });
+  if (name) {
+    pipeline.push({
+      $match: {
+        name: { $regex: name, $options: "i" },
+      },
+    });
+  }
   if (status) pipeline.push({ $match: { status } });
 
   pipeline.push(

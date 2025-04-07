@@ -20,8 +20,8 @@ const roomSchema = new mongoose.Schema({
   },
   amenities: [
     {
-      type: String,
-      enum: Object.values(RoomAmenity),
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Amenity",
     },
   ],
   images: [

@@ -3,11 +3,6 @@ import { BookingStatus, PaymentStatus } from "../types/booking";
 
 const bookingSchema = new mongoose.Schema(
   {
-    hotel: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Hotel",
-      required: true,
-    },
     room: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Room",
@@ -26,20 +21,18 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    amount: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
     paymentStatus: {
       type: String,
       enum: Object.values(PaymentStatus),
-      default: PaymentStatus.Pendiing,
+      default: PaymentStatus.Pending,
     },
     bookingStatus: {
       type: String,
       enum: Object.values(BookingStatus),
-      default: BookingStatus.Pendiing,
+      default: BookingStatus.Pending,
+    },
+    cancellationReason: {
+      type: String,
     },
   },
   { timestamps: true }

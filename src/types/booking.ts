@@ -1,5 +1,5 @@
 export enum PaymentStatus {
-  Pendiing = "Pending",
+  Pending = "Pending",
   Paid = "Paid",
   Refunded = "Refunded",
   Failed = "Failed",
@@ -10,16 +10,14 @@ export enum BookingStatus {
   Cancelled = "Cancelled",
   Completed = "Completed",
   NoShow = "No-Show",
-  Pendiing = "Pending",
+  Pending = "Pending",
 }
 
 export interface IBooking {
-  hotel: string;
   room: string;
   user: string;
   checkInDate: Date;
   checkOutDate: Date;
-  amount: number;
   paymentStatus: PaymentStatus;
   bookingStatus: BookingStatus;
 }

@@ -7,7 +7,7 @@ async function getHotelsHandler(
   res: Response,
   next: NextFunction
 ) {
-  const { page = 1, limit = 10, status, name, cordinates } = req.query;
+  const { page = 1, limit = 10, status, search, cordinates } = req.query;
   try {
     const filter: any = {};
 
@@ -17,7 +17,7 @@ async function getHotelsHandler(
       skip,
       limit: Number(limit),
       status: status as any,
-      name: name as any,
+      name: search as any,
       cordinates: cordinates as any,
     });
 

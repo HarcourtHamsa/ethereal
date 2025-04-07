@@ -33,8 +33,8 @@ const hotelSchema = new mongoose.Schema(
     },
     amenities: [
       {
-        type: String,
-        enum: Object.values(HotelAmenity),
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Amenity",
       },
     ],
     rooms: [

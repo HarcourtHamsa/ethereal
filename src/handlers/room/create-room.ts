@@ -1,12 +1,13 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { db } from "../../config/database";
 import { HotelModel } from "../../models/hotel";
 import { HttpException } from "../../utils/http";
 import { HttpStatus } from "../../types/http";
-import { RoomAmenity, RoomAvailability } from "../../types/room";
+import { RoomAvailability } from "../../types/room";
 import { processFileUploads } from "../../utils/core";
 import UploadService from "../../services/upload";
 import { RoomModel } from "../../models/room";
+import mongoose from "mongoose";
 
 async function createRoomHandler(req: any, res: Response, next: NextFunction) {
   const { name, description, price, number, amenities, status, hotel } =
@@ -16,7 +17,7 @@ async function createRoomHandler(req: any, res: Response, next: NextFunction) {
   const uploadService = new UploadService();
 
   try {
-    await session.startTransaction();
+    session.startTransaction();
 
     if (
       !name ||
@@ -43,16 +44,15 @@ async function createRoomHandler(req: any, res: Response, next: NextFunction) {
     }
 
     if (amenities && amenities.length > 0) {
-      const validAmenities = Object.values(RoomAmenity);
-      const invalidAmenities = JSON.parse(amenities).filter(
-        (amenity: string) => !validAmenities.includes(amenity as RoomAmenity)
-      );
+      for (const amenity of amenities) {
+        const isValidId = mongoose.Types.ObjectId.isValid(amenity);
 
-      if (invalidAmenities.length > 0) {
-        throw new HttpException(
-          HttpStatus.BadRequest,
-          `Invalid amenities provided: ${invalidAmenities.join(", ")}`
-        );
+        if (!isValidId) {
+          throw new HttpException(
+            HttpStatus.BadRequest,
+            `Invalid amenities provided`
+          );
+        }
       }
     }
 
