@@ -8,7 +8,7 @@ async function resetPasswordHandler(
   res: Response,
   next: NextFunction
 ) {
-  const { password, otp, emailAddress } = req.body;
+  const { password, emailAddress } = req.body;
 
   try {
     const user = await AccountModel.findOne({
@@ -17,12 +17,6 @@ async function resetPasswordHandler(
 
     if (!user) {
       throw new HttpException(HttpStatus.BadRequest, "account not found");
-    }
-
-    const [isMatch, message] = await user.compareOtp(otp as string);
-
-    if (!isMatch) {
-      throw new HttpException(HttpStatus.BadRequest, message);
     }
 
     user.password = password;

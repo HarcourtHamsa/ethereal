@@ -6,7 +6,6 @@ const router = express.Router();
 const validateRequest = () => {
   return [
     body("emailAddress").notEmpty().withMessage("Email address is required"),
-    body("otp").notEmpty().withMessage("Otp is required"),
     body("password").notEmpty().withMessage("Password is required"),
 
     (req: Request, res: Response, next: NextFunction) => {
@@ -27,7 +26,6 @@ const validateRequest = () => {
  * @access Public
  * @method POST
  * @param {String} emailAddress
- * @param {String} otp
  * @param {String} password
  */
 router.post("/reset-password", validateRequest(), resetPasswordHandler);
